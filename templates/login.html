@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login — EyesOnUS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="canvas">
+    <header class="header">
+        <h1>EyesOnUS</h1>
+        <p class="subtitle">Sign in to your account</p>
+    </header>
+
+    <div class="content">
+        <div class="paper-card" style="max-width:600px; margin:0 auto;">
+            <h2>Log in</h2>
+            {% if message %}<p class="error">{{ message }}</p>{% endif %}
+            <form class="auth" method="post" action="/login">
+                <input name="email" type="email" placeholder="Email" required>
+                <input name="password" type="password" placeholder="Password" required>
+                <div class="form-row">
+                    <button class="btn" type="submit">Sign in</button>
+                    <a class="btn btn-outline" href="/signup">Create account</a>
+                    <a class="btn btn-outline" href="/">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">Built with AI • OpenCV • Flask</footer>
+</div>
+</body>
+</html>

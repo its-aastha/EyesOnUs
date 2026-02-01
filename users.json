@@ -1,0 +1,108 @@
+{
+  "asu@gmail.com": {
+    "name": "asu",
+    "password": "scrypt:32768:8:1$coAnIpqZ9A1mGljH$fd8a1bb5b4487a69b0432412af8cb5bd175a593d893887c0571c19c6da6558abe0186eec3083258e1b7d1a6434cdba15d95d6c9cbd8768f311823bea16f83204",
+    "sessions": [
+      {
+        "start_ts": 1769938689.8677738,
+        "end_ts": 1769938695.400032,
+        "total_seconds": 5.53,
+        "focused_seconds": 4.33,
+        "unfocused_seconds": 1.2,
+        "score": 78,
+        "start_str": "2026-02-01 15:08:09",
+        "end_str": "2026-02-01 15:08:15"
+      },
+      {
+        "start_ts": 1769938711.3269944,
+        "end_ts": 1769938724.9815562,
+        "total_seconds": 13.65,
+        "focused_seconds": 11.54,
+        "unfocused_seconds": 2.11,
+        "score": 84,
+        "start_str": "2026-02-01 15:08:31",
+        "end_str": "2026-02-01 15:08:44"
+      },
+      {
+        "start_ts": 1769938751.3558974,
+        "end_ts": 1769938777.7777474,
+        "total_seconds": 26.42,
+        "focused_seconds": 11.75,
+        "unfocused_seconds": 14.67,
+        "score": 44,
+        "start_str": "2026-02-01 15:09:11",
+        "end_str": "2026-02-01 15:09:37"
+      },
+      {
+        "start_ts": 1769938820.467942,
+        "end_ts": 1769938828.9808254,
+        "total_seconds": 8.51,
+        "focused_seconds": 2.49,
+        "unfocused_seconds": 6.02,
+        "score": 29,
+        "start_str": "2026-02-01 15:10:20",
+        "end_str": "2026-02-01 15:10:28"
+      },
+      {
+        "start_ts": 1769940446.7416635,
+        "end_ts": 1769940462.0240948,
+        "total_seconds": 15.28,
+        "focused_seconds": 7.26,
+        "unfocused_seconds": 8.03,
+        "score": 47,
+        "start_str": "2026-02-01 15:37:26",
+        "end_str": "2026-02-01 15:37:42"
+      },
+      {
+        "start_ts": 1769948014.6696677,
+        "end_ts": 1769948017.2632792,
+        "total_seconds": 0.0,
+        "focused_seconds": 0.0,
+        "unfocused_seconds": 0.0,
+        "score": 0,
+        "start_str": "2026-02-01 17:43:34",
+        "end_str": "2026-02-01 17:43:37"
+      },
+      {
+        "start_ts": 1769948965.831638,
+        "end_ts": 1769949037.7413957,
+        "total_seconds": 71.91,
+        "focused_seconds": 23.62,
+        "unfocused_seconds": 48.29,
+        "score": 32,
+        "start_str": "2026-02-01 17:59:25",
+        "end_str": "2026-02-01 18:00:37"
+      },
+      {
+        "start_ts": 1769949058.2655165,
+        "end_ts": 1769949059.775806,
+        "total_seconds": 1.51,
+        "focused_seconds": 0.0,
+        "unfocused_seconds": 1.51,
+        "score": 0,
+        "start_str": "2026-02-01 18:00:58",
+        "end_str": "2026-02-01 18:00:59"
+      }
+    ]
+  },
+  "aa@gmail.com": {
+    "name": "anu",
+    "password": "scrypt:32768:8:1$mP53u0GmLgQoadtF$9f28dba62ec7c4768db836c2b9ad8f08fb8ccc9284fb53dde218add05aa24e378482800841561955ba00d1a5ba6da63fe1961636f29a8d98bcaef564f305b486"
+  },
+  "aashu@gmail.com": {
+    "name": "abc",
+    "password": "scrypt:32768:8:1$kMuaOiyLiMWLPTIo$736a008dc39cfc5df208d114e963ea8f9ee66515728b535c2ea78204930c77771d153d0555ab061fd03b6cdce7f8dfce5bc9c9b8c1084f03cb501a7b8ffbcef4",
+    "sessions": [
+      {
+        "start_ts": 1769942284.4266443,
+        "end_ts": 1769942300.1294231,
+        "total_seconds": 15.7,
+        "focused_seconds": 3.72,
+        "unfocused_seconds": 11.98,
+        "score": 23,
+        "start_str": "2026-02-01 16:08:04",
+        "end_str": "2026-02-01 16:08:20"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+flask
+opencv-python
+mediapipe
+deepface
+tensorflow
+retina-face
+ultralytics
+torch
+torchvision

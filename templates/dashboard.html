@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard — EyesOnUS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="canvas">
+    <header class="header nav">
+        <div>
+            <h1>EyesOnUS</h1>
+            <p class="subtitle">Dashboard</p>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+            <div style="color:#cbd5e1;">{{ session.get('user') }}</div>
+            <a class="btn btn-outline" href="/logout">Log out</a>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="paper-card camera">
+            <div class="tape"></div>
+            <img id="cameraFeed" src="{{ url_for('video') }}" alt="Camera Feed">
+            <p class="caption">Live Study Session</p>
+
+            <div class="controls">
+                <button id="startBtn" class="btn btn--success" aria-pressed="false">Start session</button>
+                <button id="stopBtn" class="btn btn--secondary" disabled aria-pressed="false">Stop session</button>
+                <div id="sessionBadge" class="session-badge" role="status" aria-live="polite">Inactive</div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div>Focused</div>
+                    <strong id="focused">00:00</strong>
+                </div>
+                <div class="stat">
+                    <div>Distracted</div>
+                    <strong id="distracted">00:00</strong>
+                </div>
+                <div class="stat">
+                    <div>Score</div>
+                    <strong id="score">0%</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card" style="max-height:420px;">
+            <h3>Session notes</h3>
+
+            <div id="lastSession" style="margin-top:12px;">
+                <div class="placeholder">
+                    <p>Press <strong>Start session</strong> to activate focus detection. The live preview remains visible when inactive.</p>
+                    <div style="margin-top:12px; font-size:14px; color:#cbd5e1;">
+                        <strong>Tip:</strong> Place your camera so your face is centered and clearly visible.
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:18px;">
+                <h4 style="color:#cbd5e1; margin-bottom:8px;">Recent sessions</h4>
+                <div id="sessionList" style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow:auto;">
+                    <!-- last sessions will be prepended here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">Built with AI • OpenCV • Flask</footer>
+</div>
+
+<script>
+/* Small helper to POST and show a quick loading state on the button */
+async function postJSON(url, btn) {
+    try {
+        if (btn) btn.setAttribute('aria-busy', 'true');
+        const res = await fetch(url, { method: 'POST' });
+        return res;
+    } finally {
+        if (btn) btn.removeAttribute('aria-busy');
+    }
+}
+
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+const sessionBadge = document.getElementById('sessionBadge');
+const sessionList = document.getElementById('sessionList');
+const lastSessionEl = document.getElementById('lastSession');
+
+startBtn.addEventListener('click', async () => {
+    startBtn.disabled = true;
+    const res = await postJSON('/session/start', startBtn);
+    if (res.ok) await updateStatus();
+    startBtn.disabled = false;
+});
+
+stopBtn.addEventListener('click', async () => {
+    stopBtn.disabled = true;
+    const res = await postJSON('/session/stop', stopBtn);
+    if (res.ok) {
+        const payload = await res.json().catch(() => ({}));
+        if (payload.last_session) renderLastSession(payload.last_session, true);
+        await updateStatus();
+    }
+    stopBtn.disabled = false;
+});
+
+function setButtons(active){
+    // active === true -> session running
+    startBtn.disabled = !!active;
+    stopBtn.disabled = !active;
+
+    startBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    stopBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+
+    // visual state (for anchors or older browsers we also support .disabled)
+    startBtn.classList.toggle('disabled', !!active);
+    stopBtn.classList.toggle('disabled', !active);
+}
+
+function renderLastSession(s, prepend = false){
+    if (!s) return;
+
+    // render summary in the larger panel
+    lastSessionEl.innerHTML = `
+        <div class="session-record">
+            <div class="record-row"><div class="record-label">When</div><div class="record-value">${s.start_str} — ${s.end_str}</div></div>
+            <div class="record-row"><div class="record-label">Duration</div><div class="record-value">${formatTime(s.total_seconds)}</div></div>
+            <div class="record-row"><div class="record-label">Focused</div><div class="record-value">${formatTime(s.focused_seconds)}</div></div>
+            <div class="record-row"><div class="record-label">Distracted</div><div class="record-value">${formatTime(s.unfocused_seconds)}</div></div>
+            <div class="record-row"><div class="record-label">Score</div><div class="record-value">${s.score}%</div></div>
+        </div>
+    `;
+
+    // add to recent sessions list
+    const item = document.createElement('div');
+    item.className = 'session-list-item';
+    item.innerHTML = `<div style="display:flex; justify-content:space-between; gap:12px;"><div style="color:#cbd5e1">${s.start_str}</div><div style="font-weight:800">${s.score}%</div></div>`;
+    if (prepend && sessionList.firstChild) sessionList.prepend(item); else sessionList.appendChild(item);
+}
+
+async function updateStatus(){
+    try{
+        const res = await fetch('/api/status');
+        if (res.status === 200){
+            const j = await res.json();
+            sessionBadge.textContent = j.session_active ? 'Active' : 'Inactive';
+            document.getElementById('focused').textContent = formatTime(j.focused);
+            document.getElementById('distracted').textContent = formatTime(j.unfocused);
+            document.getElementById('score').textContent = j.score + '%';
+            setButtons(!!j.session_active);
+
+            if (j.last_session) renderLastSession(j.last_session, true);
+        } else if (res.status === 302) {
+            window.location = '/login';
+        }
+    } catch (err) {
+        // keep existing UI but show disabled controls to avoid bad POSTs
+        console.warn('status fetch failed', err);
+        setButtons(false);
+        sessionBadge.textContent = 'Disconnected';
+    }
+}
+
+function formatTime(t) {
+    const m = Math.floor(t/60).toString().padStart(2,'0');
+    const s = Math.floor(t%60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+}
+
+setInterval(updateStatus, 1000);
+updateStatus();
+</script>
+</body>
+</html>
