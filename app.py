@@ -11,6 +11,12 @@ from utils.face_detector import detect_face, eyes_on_table
 from utils.object_detector import detect_objects
 from utils.focus_logic import FocusTracker
 
+
+IS_CLOUD = os.environ.get("RENDER") or os.environ.get("RAILWAY")
+
+if not IS_CLOUD:
+    cap = cv2.VideoCapture(0)
+    
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-key-change-me")
 
