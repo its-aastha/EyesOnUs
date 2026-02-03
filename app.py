@@ -16,7 +16,7 @@ IS_CLOUD = os.environ.get("RENDER") or os.environ.get("RAILWAY")
 
 if not IS_CLOUD:
     cap = cv2.VideoCapture(0)
-    
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-key-change-me")
 
@@ -271,4 +271,4 @@ def video():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=5000)
