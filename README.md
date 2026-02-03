@@ -72,3 +72,27 @@ EyesOnUS/
 ├── res10_300x300_ssd_iter_140000.caffemodel
 ├── yolov8n.pt                  # YOLOv8 model
 └── test_mediapipe.py
+
+---
+
+## Quick demo deploy (Render) ✅
+This project can be deployed as a **cloud demo** (no server webcam) in minutes. The demo provides the full UI, auth, dashboard and a simulated video stream so you can share a clickable public URL.
+
+Required environment variables (Render/Railway/Heroku):
+- `DISABLE_CAMERA=1`  # IMPORTANT — disables server webcam and uses a demo stream
+- `SECRET_KEY` = <a random secret string>
+- `PORT` is provided by the platform (no action needed)
+
+Minimal changes applied for the demo:
+- Cloud-safe camera guard and placeholder stream
+- `/health` route for platform health checks
+- `opencv-python-headless` added for cloud builds
+
+Render quick steps (5–10 minutes):
+1. Create a new **Web Service** on Render and connect your GitHub repo.
+2. Build command: leave blank or use default. Start command: `gunicorn app:app`.
+3. Set environment variables: `DISABLE_CAMERA=1`, `SECRET_KEY=<secret>`.
+4. Deploy — after build completes you'll get a clickable URL like `https://<your-service>.onrender.com`.
+
+Notes:
+- For full live webcam support you must implement client→server streaming or host the app on a machine with an accessible camera (not available on typical cloud hosts). See the section "Full live webcam + production" earlier in this README for details.

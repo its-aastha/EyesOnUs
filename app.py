@@ -5,17 +5,11 @@ import functools
 import time
 import cv2
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask
+
 # Import project utilities
 from utils.face_detector import detect_face, eyes_on_table
 from utils.object_detector import detect_objects
 from utils.focus_logic import FocusTracker
-
-
-IS_CLOUD = True
-
-if not IS_CLOUD:
-    cap = cv2.VideoCapture(0)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-key-change-me")
@@ -271,5 +265,4 @@ def video():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=5000)
+    app.run(debug=True, use_reloader=False)
