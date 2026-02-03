@@ -64,3 +64,13 @@ EyesOnUS/
 ├── res10_300x300_ssd_iter_140000.caffemodel
 ├── yolov8n.pt                  # YOLOv8 model
 └── test_mediapipe.py
+
+---
+## 🛠️ Tech Stack
+1. Backend: Python, Flask
+2.Computer Vision: OpenCV, MediaPipe
+3.Deep Learning: YOLOv8 (Ultralytics), Torch
+4.Frontend: HTML, CSS
+5. Authentication: Werkzeug (Password Hashing)
+
+---
