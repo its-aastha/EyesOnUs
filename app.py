@@ -12,7 +12,7 @@ from utils.object_detector import detect_objects
 from utils.focus_logic import FocusTracker
 
 
-IS_CLOUD = os.environ.get("RENDER") or os.environ.get("RAILWAY")
+IS_CLOUD = True
 
 if not IS_CLOUD:
     cap = cv2.VideoCapture(0)
