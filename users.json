@@ -82,6 +82,26 @@
         "score": 0,
         "start_str": "2026-02-01 18:00:58",
         "end_str": "2026-02-01 18:00:59"
+      },
+      {
+        "start_ts": 1770044547.4242325,
+        "end_ts": 1770044574.2565362,
+        "total_seconds": 26.83,
+        "focused_seconds": 15.75,
+        "unfocused_seconds": 11.08,
+        "score": 58,
+        "start_str": "2026-02-02 20:32:27",
+        "end_str": "2026-02-02 20:32:54"
+      },
+      {
+        "start_ts": 1770115463.3036177,
+        "end_ts": 1770115502.933271,
+        "total_seconds": 39.63,
+        "focused_seconds": 24.94,
+        "unfocused_seconds": 14.68,
+        "score": 62,
+        "start_str": "2026-02-03 16:14:23",
+        "end_str": "2026-02-03 16:15:02"
       }
     ]
   },
