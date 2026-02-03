@@ -5,7 +5,7 @@ import functools
 import time
 import cv2
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask import Flask
 # Import project utilities
 from utils.face_detector import detect_face, eyes_on_table
 from utils.object_detector import detect_objects
