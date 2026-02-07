@@ -1,98 +1,84 @@
 # EyesOnUS 👀  
-**AI-Powered Focus Monitoring System**
+## AI-Based Student Focus & Exam Monitoring System
 
-EyesOnUS is a real-time focus detection web application designed to help students stay attentive during study sessions.  
-It uses computer vision and deep learning to analyze face presence, eye direction, and object distractions through a live webcam feed.
-
----
-
-## 🚀 Features
-
--  User Authentication (Signup / Login)
--  Live Webcam Streaming
--  Face Detection
--  Eye Direction Tracking (Eyes on screen / table)
--  Device & Object Detection (Mobile, books, etc.)
--  Focus vs Distraction Logic
-- ⏱ Session Tracking (Focused & Unfocused time)
--  Focus Score Calculation
--  Session History stored per user
--  Web Dashboard (Flask + HTML/CSS)
+EyesOnUS is an AI-powered web application built **to help students stay focused and prevent cheating during online exams and study sessions**.  
+It continuously monitors student behavior using computer vision and records focus data for evaluation and accountability.
 
 ---
 
-## 🧠 How It Works
+## 🎯 Project Purpose
 
-1. User logs in and starts a study session  
-2. Webcam feed is analyzed in real time  
-3. System checks:
-   - Face presence  
-   - Eye direction  
-   - Device / object distraction  
-4. Focus status is updated continuously  
-5. On session stop, a detailed summary is saved  
+This project is designed to:
+- Ensure **students remain focused during exams**
+- Detect **cheating behavior** such as mobile usage or looking away
+- Maintain **study & exam discipline**
+- Track **focus performance over time**
+- Store session data for **review and analysis**
 
 ---
 
-## 🛠️ Tech Stack
-1. Backend: Python, Flask
-2. Computer Vision: OpenCV, MediaPipe
-3. Deep Learning: YOLOv8 (Ultralytics), Torch
-4. Frontend: HTML, CSS
-5. Authentication: Werkzeug (Password Hashing)
+## ⭐ Key Features (IMPORTANT)
+
+### 🧠 Focus Monitoring
+- Live webcam monitoring
+- Face presence detection
+- Eye direction detection (screen vs table)
+- Detects loss of focus when face is missing or attention is diverted
+
+### 🚫 Anti-Cheating Detection
+- Detects **mobile phones, laptops, and distracting devices**
+- Flags distraction during exams
+- Triggers alert when cheating behavior continues
+- Helps invigilators identify suspicious activity
+
+### ⏱ Session & Exam Tracking
+- Tracks:
+  - Total session time
+  - Focused time
+  - Distracted time
+- Automatically calculates **Focus Score (%)**
+- Session starts and stops are controlled from the dashboard
+
+### 🔥 Streak & Discipline Tracking
+- Maintains **study/exam streaks**
+- Encourages consistency and discipline
+- Helps students build focused habits
+
+### 📅 Dashboard with Calendar
+- Calendar view to track sessions by date
+- Easily see:
+  - Exam days
+  - Study days
+  - Missed days
+
+### 🗃 Persistent Data Storage
+- All user and session data is:
+  - **Fetched**
+  - **Stored**
+  - **Updated**
+  in `users.json`
+- No database required
+- Each user has individual session history
 
 ---
-## 🗂️ Project Structure
 
-```text
-EyesOnUS/
-│
-├── app.py                     # Main Flask application
-├── users.json                 # User & session data (file-based DB)
-├── requirements.txt           # Python dependencies
-├── README.md
-│
-├── static/
-│   ├── style.css              # UI styling
-│   └── beep.wav               # Alert sound
-│
-├── templates/
-│   ├── index.html
-│   ├── login.html
-│   ├── signup.html
-│   └── dashboard.html
-│
-├── utils/
-│   ├── face_detector.py       # Face & eye detection logic
-│   ├── object_detector.py     # YOLO object detection
-│   ├── focus_logic.py         # Focus tracking & scoring
-│   └── camera_test.py
-│
-├── deploy.prototxt             # Face detection model config
-├── res10_300x300_ssd_iter_140000.caffemodel
-├── yolov8n.pt                  # YOLOv8 model
-└── test_mediapipe.py
+## 🗂️ Stored Session Data (users.json)
 
----
+Each session is saved with full details:
 
-## Quick demo deploy (Render) ✅
-This project can be deployed as a **cloud demo** (no server webcam) in minutes. The demo provides the full UI, auth, dashboard and a simulated video stream so you can share a clickable public URL.
-
-Required environment variables (Render/Railway/Heroku):
-- `DISABLE_CAMERA=1`  # IMPORTANT — disables server webcam and uses a demo stream
-- `SECRET_KEY` = <a random secret string>
-- `PORT` is provided by the platform (no action needed)
-
-Minimal changes applied for the demo:
-- Cloud-safe camera guard and placeholder stream
-- `/health` route for platform health checks
-- `opencv-python-headless` added for cloud builds
-
-Render quick steps (5–10 minutes):
-1. Create a new **Web Service** on Render and connect your GitHub repo.
-2. Build command: leave blank or use default. Start command: `gunicorn app:app`.
-3. Set environment variables: `DISABLE_CAMERA=1`, `SECRET_KEY=<secret>`.
-4. Deploy — after build completes you'll get a clickable URL like `https://<your-service>.onrender.com`.
-
-Notes:
-- For full live webcam support you must implement client→server streaming or host the app on a machine with an accessible camera (not available on typical cloud hosts). See the section "Full live webcam + production" earlier in this README for details.
+```json
+{
+  "email@example.com": {
+    "name": "Student Name",
+    "sessions": [
+      {
+        "start_str": "2026-02-05 22:01:19",
+        "end_str": "2026-02-05 22:01:50",
+        "total_seconds": 31.35,
+        "focused_seconds": 17.9,
+        "unfocused_seconds": 13.44,
+        "score": 57
+      }
+    ]
+  }
+}
