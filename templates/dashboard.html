@@ -8,6 +8,7 @@
 <body>
 
 <div class="canvas">
+    <!-- HEADER -->
     <header class="header nav">
         <div>
             <h1>EyesOnUS</h1>
@@ -15,6 +16,7 @@
         </div>
         <div style="display:flex; gap:12px; align-items:center;">
             <div style="color:#cbd5e1;">{{ session.get('user') }}</div>
+            <a class="btn btn-outline" href="/profile">Profile</a>
             <a class="btn btn-outline" href="/logout">Log out</a>
         </div>
     </header>
@@ -28,7 +30,6 @@
 
             <!-- CONTROLS -->
             <div class="controls">
-                <!-- TIMER SELECT -->
                 <select id="timerSelect" class="timer-select">
                     <option value="5">5 second</option>
                     <option value="60">1 minute</option>
@@ -40,7 +41,6 @@
 
                 <button id="startBtn" class="btn btn--success">Start session</button>
                 <button id="stopBtn" class="btn btn--secondary" disabled>Stop session</button>
-
                 <div id="sessionBadge" class="session-badge">Inactive</div>
             </div>
 
@@ -61,8 +61,8 @@
             </div>
         </div>
 
-        <!-- SESSION NOTES -->
-        <div class="paper-card" style="max-height:420px;">
+        <!-- RIGHT CARD -->
+        <div class="paper-card" style="max-height:520px;">
             <h3>Session notes</h3>
 
             <div id="lastSession" style="margin-top:12px;">
@@ -71,10 +71,18 @@
                 </div>
             </div>
 
+            <!-- RECENT SESSIONS -->
             <div style="margin-top:18px;">
-                <h4 style="color:#cbd5e1; margin-bottom:8px;">Recent sessions</h4>
+                <h4 style="color:#cbd5e1;">Recent sessions</h4>
                 <div id="sessionList"
-                     style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow:auto;"></div>
+                     style="display:flex; flex-direction:column; gap:10px; max-height:160px; overflow:auto;">
+                </div>
+            </div>
+
+            <!-- AUTO FOCUS CALENDAR -->
+            <div style="margin-top:18px;">
+                <h4 style="color:#cbd5e1;">Focus Calendar</h4>
+                <div id="calendar" class="calendar-grid"></div>
             </div>
         </div>
     </div>
@@ -83,9 +91,10 @@
 </div>
 
 <script>
-/* ================= TIMER STATE ================= */
+/* ================= GLOBAL STATE ================= */
 let countdownInterval = null;
 let remainingSeconds = 0;
+let sessionHistory = [];
 
 /* ================= ELEMENTS ================= */
 const timerSelect = document.getElementById('timerSelect');
@@ -120,7 +129,9 @@ stopBtn.addEventListener('click', async () => {
     if (res.ok) {
         const payload = await res.json();
         if (payload.last_session) {
+            sessionHistory.push(payload.last_session);
             renderLastSession(payload.last_session, true);
+            buildCalendar();
         }
         updateStatus();
     }
@@ -135,20 +146,28 @@ function startCountdown() {
 
         const m = Math.floor(remainingSeconds / 60);
         const s = String(remainingSeconds % 60).padStart(2, '0');
+
         sessionBadge.textContent = `Active • ${m}:${s}`;
 
         if (remainingSeconds <= 0) {
             clearInterval(countdownInterval);
 
-            await fetch('/session/stop', { method: 'POST' });
+            const res = await fetch('/session/stop', { method: 'POST' });
+            if (res.ok) {
+                const payload = await res.json();
+                if (payload.last_session) {
+                    sessionHistory.push(payload.last_session);
+                    renderLastSession(payload.last_session, true);
+                    buildCalendar();
+                }
+            }
+
             sessionBadge.textContent = "Completed ✅";
 
-            // 🎉 CONGRATS MESSAGE (RIGHT CARD)
             lastSessionEl.innerHTML = `
                 <div class="congrats-box">
                     <h3>🎉 Congratulations!</h3>
                     <p>You completed your focus session.</p>
-                    <p>Keep up the great work 💪</p>
                 </div>
             `;
 
@@ -171,10 +190,6 @@ async function updateStatus() {
 
         startBtn.disabled = j.session_active;
         stopBtn.disabled = !j.session_active;
-
-        if (!j.session_active && remainingSeconds > 0) {
-            sessionBadge.textContent = "Inactive";
-        }
     } catch {
         sessionBadge.textContent = "Disconnected";
     }
@@ -206,9 +221,40 @@ function formatTime(t) {
     return `${m}:${s}`;
 }
 
+/* ================= AUTO CALENDAR ================= */
+function buildCalendar() {
+    const calendar = document.getElementById("calendar");
+    calendar.innerHTML = "";
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const scoreMap = {};
+    sessionHistory.forEach(s => {
+        const date = s.start_str.split(" ")[0];
+        scoreMap[date] = Math.max(scoreMap[date] || 0, s.score);
+    });
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const div = document.createElement("div");
+        div.className = "calendar-day";
+        div.textContent = d;
+
+        if (scoreMap[dateStr] >= 70) {
+            div.classList.add("star");
+        }
+
+        calendar.appendChild(div);
+    }
+}
+
 /* ================= AUTO REFRESH ================= */
 setInterval(updateStatus, 1000);
 updateStatus();
+buildCalendar();
 </script>
 
 </body>

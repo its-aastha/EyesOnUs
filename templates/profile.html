@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile — EyesOnUS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="canvas">
+    <header class="header">
+        <div>
+            <h1>EyesOnUS</h1>
+            <p class="subtitle">User Profile</p>
+        </div>
+        <a class="btn btn-outline" href="/dashboard">← Back to Dashboard</a>
+    </header>
+
+    <div class="content">
+        <!-- PROFILE CARD -->
+        <div class="paper-card">
+            <h2>{{ user.name }}</h2>
+            <p style="color:#cbd5e1;">{{ email }}</p>
+
+            <div class="stats" style="margin-top:24px;">
+                <div class="stat">
+                    <div>Sessions</div>
+                    <strong>{{ total_sessions }}</strong>
+                </div>
+                <div class="stat">
+                    <div>Total Focused</div>
+                    <strong>
+                        {{ "%02d:%02d"|format((total_focused//60)|int, (total_focused%60)|int) }}
+                    </strong>
+                </div>
+                <div class="stat">
+                    <div>Avg Score</div>
+                    <strong>{{ avg_score }}%</strong>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- SESSION HISTORY -->
+        <div class="paper-card">
+            <h3>Your Sessions</h3>
+
+            {% if sessions %}
+                <div style="margin-top:12px; display:flex; flex-direction:column; gap:12px; max-height:300px; overflow:auto;">
+                    {% for s in sessions|reverse %}
+                        <div class="session-record">
+                            <div><strong>Date:</strong> {{ s.start_str }}</div>
+
+                            <div><strong>Duration:</strong>
+                                {{ "%02d:%02d"|format((s.total_seconds//60)|int, (s.total_seconds%60)|int) }}
+                            </div>
+
+                            <div><strong>Focused:</strong>
+                                {{ "%02d:%02d"|format((s.focused_seconds//60)|int, (s.focused_seconds%60)|int) }}
+                            </div>
+
+                            <div><strong>Score:</strong> {{ s.score }}%</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color:#9ca3af; margin-top:12px;">No sessions yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="footer">Built with AI • OpenCV • Flask</footer>
+</div>
+
+</body>
+</html>
