@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
 <div class="canvas">
     <header class="header nav">
         <div>
@@ -19,17 +20,31 @@
     </header>
 
     <div class="content">
+        <!-- CAMERA CARD -->
         <div class="paper-card camera">
             <div class="tape"></div>
             <img id="cameraFeed" src="{{ url_for('video') }}" alt="Camera Feed">
             <p class="caption">Live Study Session</p>
 
+            <!-- CONTROLS -->
             <div class="controls">
-                <button id="startBtn" class="btn btn--success" aria-pressed="false">Start session</button>
-                <button id="stopBtn" class="btn btn--secondary" disabled aria-pressed="false">Stop session</button>
-                <div id="sessionBadge" class="session-badge" role="status" aria-live="polite">Inactive</div>
+                <!-- TIMER SELECT -->
+                <select id="timerSelect" class="timer-select">
+                    <option value="5">5 second</option>
+                    <option value="60">1 minute</option>
+                    <option value="1500">25 minutes</option>
+                    <option value="2700">45 minutes</option>
+                    <option value="3600">60 minutes</option>
+                    <option value="5400">1 hour 30 minutes</option>
+                </select>
+
+                <button id="startBtn" class="btn btn--success">Start session</button>
+                <button id="stopBtn" class="btn btn--secondary" disabled>Stop session</button>
+
+                <div id="sessionBadge" class="session-badge">Inactive</div>
             </div>
 
+            <!-- STATS -->
             <div class="stats">
                 <div class="stat">
                     <div>Focused</div>
@@ -46,23 +61,20 @@
             </div>
         </div>
 
+        <!-- SESSION NOTES -->
         <div class="paper-card" style="max-height:420px;">
             <h3>Session notes</h3>
 
             <div id="lastSession" style="margin-top:12px;">
                 <div class="placeholder">
-                    <p>Press <strong>Start session</strong> to activate focus detection. The live preview remains visible when inactive.</p>
-                    <div style="margin-top:12px; font-size:14px; color:#cbd5e1;">
-                        <strong>Tip:</strong> Place your camera so your face is centered and clearly visible.
-                    </div>
+                    <p>Press <strong>Start session</strong> to activate focus detection.</p>
                 </div>
             </div>
 
             <div style="margin-top:18px;">
                 <h4 style="color:#cbd5e1; margin-bottom:8px;">Recent sessions</h4>
-                <div id="sessionList" style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow:auto;">
-                    <!-- last sessions will be prepended here -->
-                </div>
+                <div id="sessionList"
+                     style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow:auto;"></div>
             </div>
         </div>
     </div>
@@ -71,106 +83,133 @@
 </div>
 
 <script>
-/* Small helper to POST and show a quick loading state on the button */
-async function postJSON(url, btn) {
-    try {
-        if (btn) btn.setAttribute('aria-busy', 'true');
-        const res = await fetch(url, { method: 'POST' });
-        return res;
-    } finally {
-        if (btn) btn.removeAttribute('aria-busy');
-    }
-}
+/* ================= TIMER STATE ================= */
+let countdownInterval = null;
+let remainingSeconds = 0;
 
+/* ================= ELEMENTS ================= */
+const timerSelect = document.getElementById('timerSelect');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const sessionBadge = document.getElementById('sessionBadge');
 const sessionList = document.getElementById('sessionList');
 const lastSessionEl = document.getElementById('lastSession');
 
+/* ================= START SESSION ================= */
 startBtn.addEventListener('click', async () => {
-    startBtn.disabled = true;
-    const res = await postJSON('/session/start', startBtn);
-    if (res.ok) await updateStatus();
-    startBtn.disabled = false;
-});
+    remainingSeconds = parseInt(timerSelect.value);
 
-stopBtn.addEventListener('click', async () => {
-    stopBtn.disabled = true;
-    const res = await postJSON('/session/stop', stopBtn);
+    const res = await fetch('/session/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ duration: remainingSeconds })
+    });
+
     if (res.ok) {
-        const payload = await res.json().catch(() => ({}));
-        if (payload.last_session) renderLastSession(payload.last_session, true);
-        await updateStatus();
+        startCountdown();
+        updateStatus();
     }
-    stopBtn.disabled = false;
 });
 
-function setButtons(active){
-    // active === true -> session running
-    startBtn.disabled = !!active;
-    stopBtn.disabled = !active;
+/* ================= STOP SESSION ================= */
+stopBtn.addEventListener('click', async () => {
+    clearInterval(countdownInterval);
+    sessionBadge.textContent = "Stopped";
 
-    startBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    stopBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    const res = await fetch('/session/stop', { method: 'POST' });
+    if (res.ok) {
+        const payload = await res.json();
+        if (payload.last_session) {
+            renderLastSession(payload.last_session, true);
+        }
+        updateStatus();
+    }
+});
 
-    // visual state (for anchors or older browsers we also support .disabled)
-    startBtn.classList.toggle('disabled', !!active);
-    stopBtn.classList.toggle('disabled', !active);
+/* ================= COUNTDOWN ================= */
+function startCountdown() {
+    clearInterval(countdownInterval);
+
+    countdownInterval = setInterval(async () => {
+        remainingSeconds--;
+
+        const m = Math.floor(remainingSeconds / 60);
+        const s = String(remainingSeconds % 60).padStart(2, '0');
+        sessionBadge.textContent = `Active • ${m}:${s}`;
+
+        if (remainingSeconds <= 0) {
+            clearInterval(countdownInterval);
+
+            await fetch('/session/stop', { method: 'POST' });
+            sessionBadge.textContent = "Completed ✅";
+
+            // 🎉 CONGRATS MESSAGE (RIGHT CARD)
+            lastSessionEl.innerHTML = `
+                <div class="congrats-box">
+                    <h3>🎉 Congratulations!</h3>
+                    <p>You completed your focus session.</p>
+                    <p>Keep up the great work 💪</p>
+                </div>
+            `;
+
+            updateStatus();
+        }
+    }, 1000);
 }
 
-function renderLastSession(s, prepend = false){
-    if (!s) return;
+/* ================= STATUS UPDATE ================= */
+async function updateStatus() {
+    try {
+        const res = await fetch('/api/status');
+        if (!res.ok) return;
 
-    // render summary in the larger panel
+        const j = await res.json();
+
+        document.getElementById('focused').textContent = formatTime(j.focused);
+        document.getElementById('distracted').textContent = formatTime(j.unfocused);
+        document.getElementById('score').textContent = j.score + "%";
+
+        startBtn.disabled = j.session_active;
+        stopBtn.disabled = !j.session_active;
+
+        if (!j.session_active && remainingSeconds > 0) {
+            sessionBadge.textContent = "Inactive";
+        }
+    } catch {
+        sessionBadge.textContent = "Disconnected";
+    }
+}
+
+/* ================= RENDER SESSION ================= */
+function renderLastSession(s, prepend = false) {
     lastSessionEl.innerHTML = `
         <div class="session-record">
-            <div class="record-row"><div class="record-label">When</div><div class="record-value">${s.start_str} — ${s.end_str}</div></div>
-            <div class="record-row"><div class="record-label">Duration</div><div class="record-value">${formatTime(s.total_seconds)}</div></div>
-            <div class="record-row"><div class="record-label">Focused</div><div class="record-value">${formatTime(s.focused_seconds)}</div></div>
-            <div class="record-row"><div class="record-label">Distracted</div><div class="record-value">${formatTime(s.unfocused_seconds)}</div></div>
-            <div class="record-row"><div class="record-label">Score</div><div class="record-value">${s.score}%</div></div>
+            <div>Duration: ${formatTime(s.total_seconds)}</div>
+            <div>Focused: ${formatTime(s.focused_seconds)}</div>
+            <div>Distracted: ${formatTime(s.unfocused_seconds)}</div>
+            <div>Score: ${s.score}%</div>
         </div>
     `;
 
-    // add to recent sessions list
     const item = document.createElement('div');
     item.className = 'session-list-item';
-    item.innerHTML = `<div style="display:flex; justify-content:space-between; gap:12px;"><div style="color:#cbd5e1">${s.start_str}</div><div style="font-weight:800">${s.score}%</div></div>`;
-    if (prepend && sessionList.firstChild) sessionList.prepend(item); else sessionList.appendChild(item);
+    item.innerHTML = `<strong>${s.score}%</strong> — ${s.start_str}`;
+
+    if (prepend) sessionList.prepend(item);
+    else sessionList.appendChild(item);
 }
 
-async function updateStatus(){
-    try{
-        const res = await fetch('/api/status');
-        if (res.status === 200){
-            const j = await res.json();
-            sessionBadge.textContent = j.session_active ? 'Active' : 'Inactive';
-            document.getElementById('focused').textContent = formatTime(j.focused);
-            document.getElementById('distracted').textContent = formatTime(j.unfocused);
-            document.getElementById('score').textContent = j.score + '%';
-            setButtons(!!j.session_active);
-
-            if (j.last_session) renderLastSession(j.last_session, true);
-        } else if (res.status === 302) {
-            window.location = '/login';
-        }
-    } catch (err) {
-        // keep existing UI but show disabled controls to avoid bad POSTs
-        console.warn('status fetch failed', err);
-        setButtons(false);
-        sessionBadge.textContent = 'Disconnected';
-    }
-}
-
+/* ================= FORMAT TIME ================= */
 function formatTime(t) {
-    const m = Math.floor(t/60).toString().padStart(2,'0');
-    const s = Math.floor(t%60).toString().padStart(2,'0');
+    const m = Math.floor(t / 60).toString().padStart(2, '0');
+    const s = Math.floor(t % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
 }
 
+/* ================= AUTO REFRESH ================= */
 setInterval(updateStatus, 1000);
 updateStatus();
 </script>
+
 </body>
 </html>

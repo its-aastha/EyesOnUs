@@ -1,4 +1,14 @@
 flask
 gunicorn
+
+# Computer Vision
+opencv-python-headless
+mediapipe
+
+# YOLO
+ultralytics
+torch==2.0.1
+torchvision==0.15.2
+
+# Utilities
 numpy
-opencv-python-headless  # used for demo/cloud builds (no GUI) 

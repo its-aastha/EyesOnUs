@@ -1,157 +1,119 @@
 {
+  "student@gmail.com": {
+    "name": "Student",
+    "password": "hashed",
+    "sessions": [],
+    "streak": 0,
+    "badges": [],
+    "settings": {
+      "sound": true,
+      "sensitivity": 3,
+      "goal": 3600
+    }
+  },
   "asu@gmail.com": {
-    "name": "asu",
-    "password": "scrypt:32768:8:1$coAnIpqZ9A1mGljH$fd8a1bb5b4487a69b0432412af8cb5bd175a593d893887c0571c19c6da6558abe0186eec3083258e1b7d1a6434cdba15d95d6c9cbd8768f311823bea16f83204",
+    "name": "Valand Aastha",
+    "password": "scrypt:32768:8:1$b90ugcnAsDKzZI9S$e6ac805fcaa7b2600b0143ad5296129aeb901732a44d7ce176470b634053801b413a6de594e697b3b1977f851b9c0fd90154e371623880970b56130e3af716b0",
     "sessions": [
       {
-        "start_ts": 1769938689.8677738,
-        "end_ts": 1769938695.400032,
-        "total_seconds": 5.53,
-        "focused_seconds": 4.33,
-        "unfocused_seconds": 1.2,
-        "score": 78,
-        "start_str": "2026-02-01 15:08:09",
-        "end_str": "2026-02-01 15:08:15"
-      },
-      {
-        "start_ts": 1769938711.3269944,
-        "end_ts": 1769938724.9815562,
-        "total_seconds": 13.65,
-        "focused_seconds": 11.54,
-        "unfocused_seconds": 2.11,
-        "score": 84,
-        "start_str": "2026-02-01 15:08:31",
-        "end_str": "2026-02-01 15:08:44"
-      },
-      {
-        "start_ts": 1769938751.3558974,
-        "end_ts": 1769938777.7777474,
-        "total_seconds": 26.42,
-        "focused_seconds": 11.75,
-        "unfocused_seconds": 14.67,
-        "score": 44,
-        "start_str": "2026-02-01 15:09:11",
-        "end_str": "2026-02-01 15:09:37"
-      },
-      {
-        "start_ts": 1769938820.467942,
-        "end_ts": 1769938828.9808254,
-        "total_seconds": 8.51,
-        "focused_seconds": 2.49,
-        "unfocused_seconds": 6.02,
-        "score": 29,
-        "start_str": "2026-02-01 15:10:20",
-        "end_str": "2026-02-01 15:10:28"
-      },
-      {
-        "start_ts": 1769940446.7416635,
-        "end_ts": 1769940462.0240948,
-        "total_seconds": 15.28,
-        "focused_seconds": 7.26,
-        "unfocused_seconds": 8.03,
-        "score": 47,
-        "start_str": "2026-02-01 15:37:26",
-        "end_str": "2026-02-01 15:37:42"
-      },
-      {
-        "start_ts": 1769948014.6696677,
-        "end_ts": 1769948017.2632792,
+        "start_ts": 1770466778.5534365,
+        "end_ts": 1770466779.9748144,
         "total_seconds": 0.0,
         "focused_seconds": 0.0,
         "unfocused_seconds": 0.0,
         "score": 0,
-        "start_str": "2026-02-01 17:43:34",
-        "end_str": "2026-02-01 17:43:37"
+        "start_str": "2026-02-07 17:49:38",
+        "end_str": "2026-02-07 17:49:39"
       },
       {
-        "start_ts": 1769948965.831638,
-        "end_ts": 1769949037.7413957,
-        "total_seconds": 71.91,
-        "focused_seconds": 23.62,
-        "unfocused_seconds": 48.29,
-        "score": 32,
-        "start_str": "2026-02-01 17:59:25",
-        "end_str": "2026-02-01 18:00:37"
-      },
-      {
-        "start_ts": 1769949058.2655165,
-        "end_ts": 1769949059.775806,
-        "total_seconds": 1.51,
+        "start_ts": 1770466835.9518912,
+        "end_ts": 1770466895.9348257,
+        "total_seconds": 59.98,
         "focused_seconds": 0.0,
-        "unfocused_seconds": 1.51,
+        "unfocused_seconds": 59.98,
         "score": 0,
-        "start_str": "2026-02-01 18:00:58",
-        "end_str": "2026-02-01 18:00:59"
+        "start_str": "2026-02-07 17:50:35",
+        "end_str": "2026-02-07 17:51:35"
       },
       {
-        "start_ts": 1770044547.4242325,
-        "end_ts": 1770044574.2565362,
-        "total_seconds": 26.83,
-        "focused_seconds": 15.75,
-        "unfocused_seconds": 11.08,
-        "score": 58,
-        "start_str": "2026-02-02 20:32:27",
-        "end_str": "2026-02-02 20:32:54"
+        "start_ts": 1770466912.2778597,
+        "end_ts": 1770466912.5691905,
+        "total_seconds": 0.29,
+        "focused_seconds": 0.0,
+        "unfocused_seconds": 0.29,
+        "score": 0,
+        "start_str": "2026-02-07 17:51:52",
+        "end_str": "2026-02-07 17:51:52"
       },
       {
-        "start_ts": 1770115463.3036177,
-        "end_ts": 1770115502.933271,
-        "total_seconds": 39.63,
-        "focused_seconds": 24.94,
-        "unfocused_seconds": 14.68,
-        "score": 62,
-        "start_str": "2026-02-03 16:14:23",
-        "end_str": "2026-02-03 16:15:02"
+        "start_ts": 1770478075.3367276,
+        "end_ts": 1770478135.1065738,
+        "total_seconds": 59.77,
+        "focused_seconds": 57.32,
+        "unfocused_seconds": 2.45,
+        "score": 95,
+        "start_str": "2026-02-07 20:57:55",
+        "end_str": "2026-02-07 20:58:55"
       },
       {
-        "start_ts": 1770117758.5317714,
-        "end_ts": 1770117798.954227,
-        "total_seconds": 40.42,
-        "focused_seconds": 39.39,
-        "unfocused_seconds": 1.03,
-        "score": 97,
-        "start_str": "2026-02-03 16:52:38",
-        "end_str": "2026-02-03 16:53:18"
+        "start_ts": 1770478376.6094842,
+        "end_ts": 1770478436.291504,
+        "total_seconds": 59.68,
+        "focused_seconds": 53.57,
+        "unfocused_seconds": 6.11,
+        "score": 89,
+        "start_str": "2026-02-07 21:02:56",
+        "end_str": "2026-02-07 21:03:56"
       },
       {
-        "start_ts": 1770120243.4747584,
-        "end_ts": 1770120265.508332,
-        "total_seconds": 22.03,
-        "focused_seconds": 14.38,
-        "unfocused_seconds": 7.65,
-        "score": 65,
-        "start_str": "2026-02-03 17:34:03",
-        "end_str": "2026-02-03 17:34:25"
+        "start_ts": 1770478628.6447542,
+        "end_ts": 1770478688.3112261,
+        "total_seconds": 59.67,
+        "focused_seconds": 59.67,
+        "unfocused_seconds": 0.0,
+        "score": 100,
+        "start_str": "2026-02-07 21:07:08",
+        "end_str": "2026-02-07 21:08:08"
       },
       {
-        "start_ts": 1770122405.5952663,
-        "end_ts": 1770122424.4115222,
-        "total_seconds": 18.82,
-        "focused_seconds": 1.29,
-        "unfocused_seconds": 17.53,
-        "score": 6,
-        "start_str": "2026-02-03 18:10:05",
-        "end_str": "2026-02-03 18:10:24"
-      }
-    ]
-  },
-  "aa@gmail.com": {
-    "name": "anu",
-    "password": "scrypt:32768:8:1$mP53u0GmLgQoadtF$9f28dba62ec7c4768db836c2b9ad8f08fb8ccc9284fb53dde218add05aa24e378482800841561955ba00d1a5ba6da63fe1961636f29a8d98bcaef564f305b486"
-  },
-  "aashu@gmail.com": {
-    "name": "abc",
-    "password": "scrypt:32768:8:1$kMuaOiyLiMWLPTIo$736a008dc39cfc5df208d114e963ea8f9ee66515728b535c2ea78204930c77771d153d0555ab061fd03b6cdce7f8dfce5bc9c9b8c1084f03cb501a7b8ffbcef4",
-    "sessions": [
+        "start_ts": 1770478699.7272496,
+        "end_ts": 1770478703.2012763,
+        "total_seconds": 3.47,
+        "focused_seconds": 3.47,
+        "unfocused_seconds": 0.0,
+        "score": 100,
+        "start_str": "2026-02-07 21:08:19",
+        "end_str": "2026-02-07 21:08:23"
+      },
       {
-        "start_ts": 1769942284.4266443,
-        "end_ts": 1769942300.1294231,
-        "total_seconds": 15.7,
-        "focused_seconds": 3.72,
-        "unfocused_seconds": 11.98,
-        "score": 23,
-        "start_str": "2026-02-01 16:08:04",
-        "end_str": "2026-02-01 16:08:20"
+        "start_ts": 1770478777.4205186,
+        "end_ts": 1770478782.4131937,
+        "total_seconds": 4.99,
+        "focused_seconds": 4.99,
+        "unfocused_seconds": 0.0,
+        "score": 100,
+        "start_str": "2026-02-07 21:09:37",
+        "end_str": "2026-02-07 21:09:42"
+      },
+      {
+        "start_ts": 1770478794.12527,
+        "end_ts": 1770478794.658864,
+        "total_seconds": 0.53,
+        "focused_seconds": 0.53,
+        "unfocused_seconds": 0.0,
+        "score": 100,
+        "start_str": "2026-02-07 21:09:54",
+        "end_str": "2026-02-07 21:09:54"
+      },
+      {
+        "start_ts": 1770478799.3323357,
+        "end_ts": 1770478802.1790464,
+        "total_seconds": 2.85,
+        "focused_seconds": 2.85,
+        "unfocused_seconds": 0.0,
+        "score": 100,
+        "start_str": "2026-02-07 21:09:59",
+        "end_str": "2026-02-07 21:10:02"
       }
     ]
   }

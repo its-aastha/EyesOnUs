@@ -2,6 +2,14 @@ import time
 import winsound
 
 class FocusTracker:
+    def get_badge(self):
+        if self.focused_time >= 3600:
+            return "1 Hour No Distraction"
+        elif self.get_stats()[3] >= 80:
+            return "Focused Learner"
+        else:
+            return None
+
     def __init__(self):
         self.unfocused_since = None
         self.last_state = "FOCUSED"
