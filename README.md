@@ -2,7 +2,7 @@
 ## AI-Based Student Focus & Exam Monitoring System
 
 EyesOnUS is an AI-powered web application built **to help students stay focused and prevent cheating during online exams and study sessions**.  
-It continuously monitors student behavior using computer vision and records focus data for evaluation and accountability.
+It continuously monitors student behavior using computer vision and records focus data for evaluation and accountability..
 
 ---
 
